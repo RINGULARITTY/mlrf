@@ -59,7 +59,7 @@ def main(features):
     data_folder = "./data/processed"
     
     x_train_path = os.path.join("./data/interim", "x_train.pkl.gz")
-    if not dl.check_file(x_train_path, "make_dataset"):
+    if not dl.check_file(x_train_path, "data/make"):
         return
     with gzip.open(x_train_path, 'rb') as f:
         x_train = pickle.load(f)
@@ -68,7 +68,7 @@ def main(features):
     dl.sub_task("Test set")
 
     x_test_path = os.path.join("./data/interim", "x_test.pkl.gz")
-    if not dl.check_file(x_test_path, "make_dataset"):
+    if not dl.check_file(x_test_path, "data/make"):
         return
     with gzip.open(x_test_path, 'rb') as f:
         x_test = pickle.load(f)

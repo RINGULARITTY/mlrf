@@ -11,12 +11,15 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib')))
 import display_lib as dl
 
+
 @click.command()
-def main():
+@click.option("--train_batches", default=5, help="Train batches amount to take")
+def main(train_batches):
     """ Merge datasets, extract X and y and export them.
     """
     def unpickle(file):
-        import pickle
+        if not dl.check_file(file, "data/get"):
+            exit()
         with open(file, 'rb') as fo:
             dict = pickle.load(fo, encoding='bytes')
         return dict
@@ -38,7 +41,7 @@ def main():
     dl.sub_task("Read batches")
     data = []
     labels = []
-    for i in range(5):
+    for i in range(train_batches):
         batch = unpickle(f"{input_folder}/data_batch_{i+1}")
         data.append(batch[b"data"])
         labels.extend(batch[b"labels"])

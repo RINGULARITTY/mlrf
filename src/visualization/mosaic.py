@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib'
 import display_lib as dl
 
 @click.command()
-@click.option('--label', prompt='Pick a label ', help='Images with this label will be displayed')
+@click.option('--label', default=0, help='Images with this label will be displayed')
 @click.option('--amount', default=100, help='Amount of images to display')
 def main(label, amount):
     label = int(label)
@@ -26,13 +26,13 @@ def main(label, amount):
     data_folder = "./data/processed"
 
     x_path = os.path.join(data_folder, "x_train.pkl.gz")
-    if not dl.check_file(x_path, "make_dataset"):
+    if not dl.check_file(x_path, "data/make"):
         return
     with gzip.open(x_path, 'rb') as f:
         x = pickle.load(f)
 
     y_path = os.path.join(data_folder, "y_train.npy.gz")
-    if not dl.check_file(y_path, "make_dataset"):
+    if not dl.check_file(y_path, "data/make"):
         return
     with gzip.GzipFile(y_path, 'r') as f:
         y = np.load(f, allow_pickle=True)
@@ -61,7 +61,7 @@ def main(label, amount):
     plt.axis('off')
     plt.savefig("./reports/figures/mosaic_{label}_{amount}.png")
     dl.ok()
-    
     plt.show()
+
 if __name__ == '__main__':
     main()

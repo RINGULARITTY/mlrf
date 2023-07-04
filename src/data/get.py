@@ -8,6 +8,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib')))
 import display_lib as dl
 
+
 @click.command()
 def main():
     url = "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
@@ -36,7 +37,7 @@ def main():
     for file in os.listdir(folder_name):
         for prefix in file_prefixes:
             if file.startswith(prefix):
-                os.rename(os.path.join(folder_name, file), os.path.join(output_folder, file))
+                shutil.move(os.path.join(folder_name, file), os.path.join(output_folder, file))
 
     shutil.rmtree(folder_name)
     os.remove(filename)

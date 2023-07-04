@@ -23,7 +23,7 @@ def main():
 
         dl.sub_task("Load data")
         x_path = os.path.join(data_folder, f"x_{feature}_train.npy.gz")
-        if not dl.check_file(x_path, "make_dataset & build_features"):
+        if not dl.check_file(x_path, "features/build"):
             return
         with gzip.GzipFile(x_path, 'r') as f:
             x = np.load(f, allow_pickle=True)

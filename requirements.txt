@@ -8,6 +8,7 @@ coverage
 awscli
 numpy
 termcolor
+colorama
 PIL
 tqdm
 scikit-image

@@ -3,12 +3,15 @@ import numpy as np
 from skimage import color
 from skimage.feature import hog
 from skimage import feature
-from display_lib import *
 from sklearn.preprocessing import StandardScaler
 import gzip
 import pickle
 import warnings
-from colorama import init
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib')))
+import display_lib as dl
 
 @click.command()
 @click.option("--features", default="all", help="Choose features to build ex : flatten,hog,lbp")
@@ -49,34 +52,34 @@ def main(features):
             flattened_images.append(flattened_img)
         return flattened_images
     
-    init()
-    group_task("Import data")
-    sub_task("Train set")
+    dl.init()
+    dl.group_task("Import data")
+    dl.sub_task("Train set")
     
     data_folder = "./data/processed"
     
     x_train_path = os.path.join("./data/interim", "x_train.pkl.gz")
-    if not check_file(x_train_path, "make_dataset"):
+    if not dl.check_file(x_train_path, "make_dataset"):
         return
     with gzip.open(x_train_path, 'rb') as f:
         x_train = pickle.load(f)
 
-    ok()
-    sub_task("Test set")
+    dl.ok()
+    dl.sub_task("Test set")
 
     x_test_path = os.path.join("./data/interim", "x_test.pkl.gz")
-    if not check_file(x_test_path, "make_dataset"):
+    if not dl.check_file(x_test_path, "make_dataset"):
         return
     with gzip.open(x_test_path, 'rb') as f:
         x_test = pickle.load(f)
 
-    ok()
+    dl.ok()
     
     warnings.filterwarnings("ignore")
     for f in features:
-        group_task(f"Processing for {f}")
+        dl.group_task(f"Processing for {f}")
         
-        sub_task("Calculate for train and test")
+        dl.sub_task("Calculate for train and test")
         if f == "flatten":
             x_f_train = flatten_images(x_train)
             x_f_test = flatten_images(x_test)
@@ -86,24 +89,24 @@ def main(features):
         elif f == "lbp":
             x_f_train = extract_lbp_features(x_train)
             x_f_test = extract_lbp_features(x_test)
-        ok()
+        dl.ok()
         
-        sub_task("Normalization")
+        dl.sub_task("Normalization")
 
         scaler = StandardScaler()
         scaler.fit(x_f_train)
         x_f_train = scaler.transform(x_f_train)
         x_f_test = scaler.transform(x_f_test)
         
-        ok()
+        dl.ok()
         
-        t = Task("Export data")
+        t = dl.Task("Export data")
         with gzip.GzipFile(os.path.join(data_folder, f'x_{f}_train.npy.gz'), 'w') as file:
             np.save(file=file, arr=x_f_train)
         with gzip.GzipFile(os.path.join(data_folder, f'x_{f}_test.npy.gz'), 'w') as file:
             np.save(file=file, arr=x_f_test)
         t.stop()
-        ok()
+        dl.ok()
 
 if __name__ == '__main__':
     main()

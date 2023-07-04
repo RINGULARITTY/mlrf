@@ -4,14 +4,17 @@ from sklearn.multiclass import OneVsRestClassifier
 from joblib import dump
 from sklearn.neighbors import KNeighborsClassifier
 from xgboost import DMatrix, train
-from colorama import init
-from display_lib import *
+import os
 import gzip
 import numpy as np
 import json
 import warnings
 import matplotlib.pyplot as plt
 from PIL import Image
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib')))
+import display_lib as dl
 
 @click.command()
 @click.option("--hyper_params", default='{"svm": {"tol": 1e-4, "C": 1.0, "max_iter": 50}, "k-means": {"n_neighbors": 10, "leaf_size": 100}, "xg-boost": {"max_depth": 20, "epochs": 50, "learning_rate": 0.1}}', help="Choose hyper-parameters")
@@ -39,19 +42,19 @@ def main(hyper_params, override):
         xgboost = train(hyper_params["xg-boost"], dtrain, epochs, verbose_eval=False, evals=[(dtrain, 'train')], evals_result=evals_result)
         return xgboost, evals_result['train']['rmse']
 
-    init()
+    dl.init()
     data_folder = "./data/processed"
     
-    group_task("Import data")
-    sub_task("Labels")
+    dl.group_task("Import data")
+    dl.sub_task("Labels")
 
     y_path = os.path.join(data_folder, "y_train.npy.gz")
-    if not check_file(y_path, "make_dataset"):
+    if not dl.check_file(y_path, "make_dataset"):
         return
     with gzip.GzipFile(y_path, 'r') as f:
         y_train = np.load(f, allow_pickle=True)
 
-    ok()
+    dl.ok()
     
     warnings.filterwarnings("ignore")
     losses = {}
@@ -62,26 +65,26 @@ def main(hyper_params, override):
             if not override and os.path.exists(model_path):
                 continue
             
-            group_task(f"Processing {model.__name__} for {feature}")
+            dl.group_task(f"Processing {model.__name__} for {feature}")
             
-            t = Task("Load data")
+            t = dl.Task("Load data")
             x_path = os.path.join(data_folder, f"x_{feature}_train.npy.gz")
-            if not check_file(x_path, "make_dataset & build_features"):
+            if not dl.check_file(x_path, "make_dataset & build_features"):
                 return
             with gzip.GzipFile(x_path, 'r') as f:
                 x_train = np.load(f, allow_pickle=True)
             t.stop()
-            ok()
+            dl.ok()
             
-            t = Task("Train model")
+            t = dl.Task("Train model")
             trained_model, loss = model(x_train, y_train)
             t.stop()
-            ok()
+            dl.ok()
             
-            sub_task("Save model")
+            dl.sub_task("Save model")
             dump(trained_model, model_path)
             losses[feature] = loss
-            ok()
+            dl.ok()
 
     try:
         for feature in ["flatten", "hog", "lbp"]:

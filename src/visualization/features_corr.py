@@ -1,33 +1,35 @@
 import click
 import os
 import gzip
-from display_lib import *
 import numpy as np
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
-from colorama import init
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib')))
+import display_lib as dl
 
 @click.command()
 def main():
     """Visualize correlation of features
     """
     
-    init()
+    dl.init()
     data_folder = "./data/processed"
 
     for feature in ["hog", "lbp"]:
-        group_task(f"Processing for {feature}")
+        dl.group_task(f"Processing for {feature}")
 
-        sub_task("Load data")
+        dl.sub_task("Load data")
         x_path = os.path.join(data_folder, f"x_{feature}_train.npy.gz")
-        if not check_file(x_path, "make_dataset & build_features"):
+        if not dl.check_file(x_path, "make_dataset & build_features"):
             return
         with gzip.GzipFile(x_path, 'r') as f:
             x = np.load(f, allow_pickle=True)
-        ok()
+        dl.ok()
         
-        t = Task("Create figure")
+        t = dl.Task("Create figure")
 
         corr = pd.DataFrame(x).corr()
 
@@ -37,7 +39,7 @@ def main():
         sns.heatmap(corr, mask=mask, center=0, square=True, cbar_kws={"shrink": .5})
 
         t.stop()
-        ok()
+        dl.ok()
 
         plt.show()
 

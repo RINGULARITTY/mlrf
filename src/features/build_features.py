@@ -55,7 +55,7 @@ def main(features):
     
     data_folder = "./data/processed"
     
-    x_train_path = os.path.join(data_folder, "x_train.pkl.gz")
+    x_train_path = os.path.join("./data/interim", "x_train.pkl.gz")
     if not check_file(x_train_path, "make_dataset"):
         return
     with gzip.open(x_train_path, 'rb') as f:
@@ -64,7 +64,7 @@ def main(features):
     ok()
     sub_task("Test set")
 
-    x_test_path = os.path.join(data_folder, "x_test.pkl.gz")
+    x_test_path = os.path.join("./data/interim", "x_test.pkl.gz")
     if not check_file(x_test_path, "make_dataset"):
         return
     with gzip.open(x_test_path, 'rb') as f:

@@ -18,8 +18,9 @@ def main(train):
     sub_task("Load data")
 
     data_folder = "./data/processed"
+    dataset_type = "train" if train == "train" else "test"
 
-    y_path = os.path.join(data_folder, "y_train.npy.gz" if train == "train" else "y_test.npy.gz")
+    y_path = os.path.join(data_folder, f"y_{dataset_type}.npy.gz")
     if not check_file(y_path, "make_dataset"):
         return
     with gzip.GzipFile(y_path, 'r') as f:
@@ -33,12 +34,13 @@ def main(train):
     labels = label_perc.keys()
     sizes = label_perc.values()
 
-    _, ax1 = plt.subplots()
+    fig, ax1 = plt.subplots()
     ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 
     ax1.axis('equal')
 
-    ax1.set_title(f'Labels repartition of {"train" if train == "train" else "test"} set')
+    ax1.set_title(f'Labels repartition of {dataset_type} set')
+    fig.savefig(f"./reports/figures/repartition_{dataset_type}_set.png")
 
     ok()
     plt.show()

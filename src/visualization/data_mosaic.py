@@ -9,8 +9,8 @@ from PIL import Image
 import pickle
 
 @click.command()
-@click.option('--label', prompt='Pick a label ', help='Label to display')
-@click.option('--amount', default=100, help='Amount to display')
+@click.option('--label', prompt='Pick a label ', help='Images with this label will be displayed')
+@click.option('--amount', default=100, help='Amount of images to display')
 def main(label, amount):
     label = int(label)
     if label < 0 or label > 9:
@@ -57,6 +57,7 @@ def main(label, amount):
     plt.title(f"Mosaic of {amount} images where label={label}")
     plt.imshow(mosaic_image)
     plt.axis('off')
+    plt.savefig("./reports/figures/mosaic_{label}_{amount}.png")
     ok()
     
     plt.show()

@@ -52,7 +52,7 @@ def main():
     
     
     sub_task("Export data")
-    with gzip.open(os.path.join(output_folder, 'x_train.pkl.gz'), 'wb') as f:
+    with gzip.open(os.path.join("./data/interim", 'x_train.pkl.gz'), 'wb') as f:
         pickle.dump(x, f)
     with gzip.GzipFile(os.path.join(output_folder, 'y_train.npy.gz'), 'w') as f:
         np.save(file=f, arr=y)
@@ -72,7 +72,7 @@ def main():
     ok()
 
     sub_task("Export data")
-    with gzip.open(os.path.join(output_folder, 'x_test.pkl.gz'), 'wb') as f:
+    with gzip.open(os.path.join("./data/interim", 'x_test.pkl.gz'), 'wb') as f:
         pickle.dump(x_test, f)
     with gzip.GzipFile(os.path.join(output_folder, 'y_test.npy.gz'), 'w') as f:
         np.save(file=f, arr=y_test)

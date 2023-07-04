@@ -15,7 +15,7 @@ from PIL import Image
 
 @click.command()
 @click.option("--hyper_params", default='{"svm": {"tol": 1e-4, "C": 1.0, "max_iter": 50}, "k-means": {"n_neighbors": 10, "leaf_size": 100}, "xg-boost": {"max_depth": 20, "epochs": 50, "learning_rate": 0.1}}', help="Choose hyper-parameters")
-@click.option("--override", default=False, help="")
+@click.option("--override", default=False, help="Override model, else doesn't compute it")
 def main(hyper_params, override):
     hyper_params = json.loads(hyper_params)
     epochs = hyper_params["xg-boost"].pop("epochs")
@@ -57,7 +57,7 @@ def main(hyper_params, override):
     losses = {}
     for model in [SVM, KMeans, XGBoost]:
         for feature in ["flatten", "hog", "lbp"]:
-            model_path = f'{data_folder}/{model.__name__.lower()}_{feature}.joblib'
+            model_path = f'models/{model.__name__.lower()}_{feature}.joblib'
             
             if not override and os.path.exists(model_path):
                 continue
@@ -90,10 +90,10 @@ def main(hyper_params, override):
 
         plt.title(f"XG-Boost RSME")
         plt.legend()
-        plt.savefig(f"./data/figures/xgboost_train.png")
+        plt.savefig(f"./reports/figures/xgboost_train.png")
         plt.show()
     except:
-        img = Image.open(f"./data/figures/xgboost_train.png")
+        img = Image.open(f"./reports/figures/xgboost_train.png")
         img.show()
 
 if __name__ == "__main__":

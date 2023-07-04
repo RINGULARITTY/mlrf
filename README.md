@@ -102,8 +102,7 @@ python ./src/visualization/data_mosaic.py --label=5 --amount=500
 _All figures are saved in ./reports/figures_
 
 We can also visualize labels repartition :
-> Params :
-    - dataset (train) : Display train or test dataset.
+- `dataset=train` : Display train or test dataset.
 
 ```bash
 python ./src/visualization/data_repartition.py
@@ -113,8 +112,7 @@ python ./src/visualization/data_repartition.py
 
 Now we can process features. You can compute Flatten, HOG and LBP :
 
-> Params:
-    - features (all) : Choose features to build ex : flatten,hog
+- `features=all` : Choose features to build ex : flatten,hog
 
 ```bash
 python ./src/features/build_features.py

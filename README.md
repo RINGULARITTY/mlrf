@@ -91,9 +91,9 @@ python ./src/data/make_dataset.py
 ```
 
 Let's have a look of what data looks like images in the train set.
-> Params :
-    - label [prompt] : Images with this label will be displayed
-    - amount (100) : Amount of images to display
+
+- `label` [prompt] : Images with this label will be displayed
+- `amount=100` : Amount of images to display
 
 ```bash
 python ./src/visualization/data_mosaic.py --label=5 --amount=500
@@ -129,13 +129,8 @@ python ./src/visualization/features_corr.py
 
 Build and train us models :
 
-> Params :
-    - hyper_params ({
-        "svm": {"tol": 1e-4, "C": 1.0, "max_iter": 50},
-        "k-means": {"n_neighbors": 10, "leaf_size": 100},
-        "xg-boost": {"max_depth": 20, "epochs": 50, "learning_rate": 0.1}
-        }) : Dictionary of hyper-parameters
-    - override (False) : Override model, else doesn't compute it
+- `hyper_params={"svm": {"tol": 1e-4, "C": 1.0, "max_iter": 50}, "k-means": {"n_neighbors": 10, "leaf_size": 100}, "xg-boost": {"max_depth": 20, "epochs": 50, "learning_rate": 0.1}}` : Dictionary of hyper-parameters
+- `override=False` : Override model, else doesn't compute it
 
 ```bash
 python ./src/models/train_models.py

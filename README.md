@@ -38,11 +38,11 @@ Project Organization
 
 --------
 
-Models pre-trained (KMeans excluded) are available here : https://drive.google.com/file/d/1q9bhnsDhqpZl_PN2W8x0wvwHtDiLXYAO/view?usp=sharing
+Models pre-trained (KMeans excluded) are available [on Google Drive](https://drive.google.com/file/d/1q9bhnsDhqpZl_PN2W8x0wvwHtDiLXYAO/view?usp=sharing)
 
 _Make sure to put them in ./models folder._
 
-**All commands must be done from the root path mlrf/>**
+**All commands must be done from the root path mlrf/**
 
 ### Python setup 
 

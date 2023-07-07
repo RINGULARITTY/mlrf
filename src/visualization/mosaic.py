@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import pickle
+import warnings
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../lib')))
@@ -12,8 +13,8 @@ import display_lib as dl
 
 @click.command()
 @click.option('--label', default=0, help='Images with this label will be displayed')
-@click.option('--amount', default=100, help='Amount of images to display')
-def main(label, amount):
+@click.option('--size', default=9, help='Size of tile (9 means 81 images)')
+def main(label, size):
     label = int(label)
     if label < 0 or label > 9:
         dl.error("Must have 0<=label<=9")
@@ -25,7 +26,7 @@ def main(label, amount):
 
     data_folder = "./data/processed"
 
-    x_path = os.path.join(data_folder, "x_train.pkl.gz")
+    x_path = os.path.join("./data/interim", "x_train.pkl.gz")
     if not dl.check_file(x_path, "data/make"):
         return
     with gzip.open(x_path, 'rb') as f:
@@ -41,25 +42,23 @@ def main(label, amount):
 
     dl.sub_task("Making figure")
 
-    images = x[y == 1]
-    images = images[np.random.choice(len(images), size=amount, replace=False)]
 
-    mosaic_dim = int(np.sqrt(len(images))) + 1
+    warnings.filterwarnings("ignore")
+    images = np.array(x, dtype=object)[y == label]
+    images = images[np.random.choice(len(images), size=size*size, replace=False)]
 
     width, height = images[0].size
-    mosaic_image = Image.new('RGB', (width * mosaic_dim, height * mosaic_dim))
+    mosaic_image = Image.new('RGB', (width * size, height * size))
 
-    # Parcourir chaque image et la copier dans la mosaïque
     for i, img in enumerate(images):
-        x = i % mosaic_dim
-        y = i // mosaic_dim
+        x = i % size
+        y = i // size
         mosaic_image.paste(img, (x * width, y * height))
 
-    # Afficher la mosaïque
-    plt.title(f"Mosaic of {amount} images where label={label}")
+    plt.title(f"Mosaic of {size}x{size} images where label={label}")
     plt.imshow(mosaic_image)
     plt.axis('off')
-    plt.savefig("./reports/figures/mosaic_{label}_{amount}.png")
+    plt.savefig(f"./reports/figures/mosaic_{label}_{size}x{size}.png")
     dl.ok()
     plt.show()
 

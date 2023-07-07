@@ -38,11 +38,11 @@ Project Organization
 
 --------
 
-Models pre-trained (KMeans excluded) are available [on Google Drive](https://drive.google.com/file/d/1q9bhnsDhqpZl_PN2W8x0wvwHtDiLXYAO/view?usp=sharing)
+Models pre-trained are available here : https://drive.google.com/file/d/129uGZ0P8uAIr4rGbLuZmc40LpUzzWMB1/view?usp=sharing
 
 _Make sure to put them in ./models folder._
 
-**All commands must be done from the root path mlrf/**
+**All commands must be done from the root path mlrf/>**
 
 ### Python setup 
 
@@ -82,7 +82,7 @@ python ./src/data/make.py --train_batches=5
 Let's have a look of what data looks like images in the train set.
 
 - `label=0` : Images with this label will be displayed
-- `amount=100` : Amount of images to display
+- `amount=9` : Size of tile (9 means 81 images)
 
 ```bash
 python ./src/visualization/mosaic.py --label=5 --amount=500
@@ -117,12 +117,14 @@ python ./src/visualization/corr.py
 
 Build and train your models :
 
-- `hyper_params={"svm": {"tol": 1e-4, "C": 1.0, "max_iter": 50}, "k-means": {"n_neighbors": 10, "leaf_size": 100}, "xg-boost": {"max_depth": 15, "epochs": 25, "learning_rate": 0.1}}` : Dictionary of hyper-parameters
+- `hyper_params={"svm": {"tol": 1e-4, "C": 1.0, "max_iter": 50}, "k-means": {"n_neighbors": 10}, "xg-boost": {"max_depth": 15, "epochs": 50, "learning_rate": 0.1}}` : Dictionary of hyper-parameters
 - `override=False` : Override model, else doesn't compute it
 
 ```bash
 python ./src/models/train.py
 ```
+
+leaf_size for KMeans will be adjusted with DE algorithm. 
 
 _Notice it will display loss history for XG-Boost model_
 

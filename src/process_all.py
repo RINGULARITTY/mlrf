@@ -7,7 +7,6 @@ def pipeline():
     for script in [
         "src/data/get.py", "src/data/make.py",       # Collect and pre-process data
         "src/features/build.py",                     # Create features
-        "src/data/clean.py",                         # Clean interim data
         "src/models/train.py", "src/models/test.py", # Train and test models
         "src/visualization/performances.py"          # Visualize test results
     ]:

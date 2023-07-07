@@ -41,6 +41,7 @@ def main():
         t.stop()
         dl.ok()
 
+        plt.savefig(f"./reports/figures/corr_{feature}.png")
         plt.show()
 
 if __name__ == "__main__":

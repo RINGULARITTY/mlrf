@@ -17,3 +17,4 @@ pickle
 seaborn
 joblib
 xgboost
+scipy

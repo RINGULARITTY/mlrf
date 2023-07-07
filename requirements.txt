@@ -9,11 +9,10 @@ awscli
 numpy
 termcolor
 colorama
-PIL
+Pillow
 tqdm
 scikit-image
 scikit-learn
-pickle
 seaborn
 joblib
 xgboost
